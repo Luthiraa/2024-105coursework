@@ -42,16 +42,6 @@ int cases_average(int cases[], int cases_size,int initial_amount){
     return average;
 }
 
-void eliminate_cases(int cases[], int cases_size, int eliminated) {
-    printf("Eliminating %d cases.\n", eliminated);
-
-    for (int i = 0; i < eliminated; i++) {
-        int caseIndex = pick_case_index(cases, cases_size);
-        int amount = remove_case_and_get_amount(cases, cases_size, caseIndex);
-        printf("Eliminated case %d with amount %d.\n", caseIndex + 1, amount);
-    }
-}
-
 int main () {
     int cases[] = {
         0,
