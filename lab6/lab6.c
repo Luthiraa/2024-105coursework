@@ -78,7 +78,7 @@ char *readWord(int *wordSize) {
     char *word = malloc((*wordSize + 1) * sizeof(char));
 
     if (word == NULL) {
-        printf("Memory allocation failed\n");
+        printf("Malloc failed\n");
         exit(1);
     }
 
@@ -112,6 +112,6 @@ void printWordPuzzle(const int Size, char puzzle[][Size]) {
 }
 void printWord(char *word, const int wordSize) {
     for (int i = 0; i<wordSize; i++){
-        printf("%c ", *(word+i));
+        printf("%c ", word[i]);
     }
 }
