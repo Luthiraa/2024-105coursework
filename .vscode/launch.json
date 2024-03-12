@@ -33,8 +33,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/luthi/Desktop/aps105/APS105/lab6",
-      "program": "c:/Users/luthi/Desktop/aps105/APS105/lab6/build/Debug/outDebug",
+      "cwd": "c:/Users/luthi/Desktop/aps105/APS105/otherstuff",
+      "program": "c:/Users/luthi/Desktop/aps105/APS105/otherstuff/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

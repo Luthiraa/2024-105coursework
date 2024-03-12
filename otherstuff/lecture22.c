@@ -25,7 +25,7 @@ int main(void)
     // printf("%d\n", arr + (i * numCols + j));
 
     // to get the 2rd element in the 2nd row:
-    printf(" try this one: %d", *(arr+(2*numCols+1)));
+    printf(" %d", *(arr+(2*numCols+1)));
 
     int arr2d[2][3] = {1, 2, 3, 4, 5, 6};
 

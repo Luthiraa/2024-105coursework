@@ -29,6 +29,8 @@ int main(void){
     // Free the dynamically allocated memory
     for (int i = 0; i < 2; i++) {
         free(arr[i]);
+        arr[i] = NULL;
     }
     free(arr);
+    arr=NULL;
 }
