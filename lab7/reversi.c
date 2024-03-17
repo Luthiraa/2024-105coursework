@@ -47,6 +47,7 @@ void printBoard(char board[][26], int n) {
         printf("\n");
     }
 }
+
 bool positionInBounds(int n, int row, int col) {
   //within boundaries
     if (row >= 0 && row < n && col >= 0 && col < n){
@@ -55,13 +56,18 @@ bool positionInBounds(int n, int row, int col) {
     return false;
 }
 
-bool checkLegalInDirection(char board[][26], int n, int row, int col, char colour, int deltaRow, int deltaCol) {
+char assignColour(char colour){
     char other;
     if (colour == 'B'){
         other = 'W';
     }else{
         other = 'B';
     }
+    return other; 
+}
+
+bool checkLegalInDirection(char board[][26], int n, int row, int col, char colour, int deltaRow, int deltaCol) {
+    char other = assignColour(colour);
     row += deltaRow;
     col += deltaCol;
     //error check fiurst 
@@ -104,33 +110,6 @@ void movesAvail(char board[][26], int n, char colour) {
     }
 }
 
-// void readBoard(char board[][26], int n) {
-//  char color, row, col;
-//     printf("Enter board configuration: \n");
-//     while (scanf(" %c%c%c", &color, &row, &col)==3&&color!= '!') {
-//         //convert back to the grid of the game exlcduing the coordinate susytem defined on i=0 and j=0
-//         int i=row-'a';
-//         int j=col- 'a';
-//         if (positionInBounds(n,i ,j)) {
-//             board[i][j]=color;
-//         }
-//     }
-//     printf("  ");
-//     //top row coords
-//     for (int i = 0; i < n; i++) {
-//         printf("%c", coords[i]);
-//     }
-//     printf("\n");
-    
-//     for (int i = 0; i < n; i++) {
-//         // column coords along j=0 
-//         printf("%c ", coords[i]);
-//         //values 
-//         for (int j = 0; j < n; j++) {
-//             printf("%c", board[i][j]);
-//         }
-//         printf("\n");
-//     }
 
 void readBoard(char board[][26], int n) {
     char color, row, col;
@@ -145,12 +124,7 @@ void readBoard(char board[][26], int n) {
     }
 }
 void flip(char board[][26], int n, int row, int col, char colour, int deltaRow, int deltaCol) {
-    char other;
-    if (colour=='B') {
-        other = 'W';
-    }else{
-      other='B';
-    }
+    char other = assignColour(colour);
     int i = row + deltaRow;
     int j = col + deltaCol;
     while (board[i][j] == other) {
@@ -174,8 +148,10 @@ int main(void) {
   printf("Enter the board dimension: ");
   scanf("%d", &n);
   char board[n][26];
+  //even nxn array
   if (n%2==0){
-    initBoard(board,n);  // Initialize the board before printing
+    // Initialize the board before printing
+    initBoard(board,n);  
     printBoard(board,n);
     readBoard(board, n);
     // printf("after!!!!!!!!!!!!!!!!!!!!!!\n");
@@ -185,22 +161,23 @@ int main(void) {
     char colour, row, col;
     printf("Enter a move:\n");
     scanf(" %c%c%c", &colour, &row, &col);
+    //reinit to proper grid
     int i = row - 'a';
     int j = col - 'a';
-
-  bool validMove = false;
+  bool isValid = false;
   for (int m = 0; m < 8; m++) {
     if (checkLegalInDirection(board, n, i, j, colour, di[m], dj[m])) {
-      validMove = true;
-      break;
+        isValid = true;
+        break;
     }
   }
-  if (positionInBounds(n, i, j) && board[i][j] == 'U' && validMove==true) {
+  if (positionInBounds(n, i, j) && board[i][j] == 'U' && isValid==true) {
     printf("Valid move.\n");
     makeMove(board, n, i, j, colour);
     printBoard(board, n);
   } else {
     printf("Invalid move.\n");
+    printBoard(board, n);
   }
   }
 }
@@ -234,11 +211,19 @@ int main(void) {
 // Wdb
 // Valid move.
 // abcd
+//property of luthira :)))
+
 // a UUBU
 // b BWBU
 // c WWWU
 // d UWUU
 
+
+// Bbd
+// Bad
+// Wde
+// Wcb
+// !!!
 
 // gcc reversi.c -o reversi
 // ~aps105i/public/exercise 7 reversi
