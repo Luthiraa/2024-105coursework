@@ -2,7 +2,7 @@
 // Author:Luthira Abeykoon
 //
 
-#include "reversi.h"
+#include "lab8part1.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -89,13 +89,6 @@ bool checkLegalInDirection(char board[][26], int n, int row, int col, char colou
         row += deltaRow;
         col += deltaCol;
     }
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n; j++) {
-            if(board[i][j] == colour) {
-                continue;
-            }
-        }
-    }
     return false;
 }
 
@@ -146,8 +139,43 @@ void makeMove(char board[][26], int n, int row, int col, char colour) {
     board[row][col] = colour;
     for (int m = 0; m < 8; m++) {
         if (checkLegalInDirection(board, n, row, col, colour, di[m], dj[m])) {
+            
             flip(board, n, row, col, colour, di[m], dj[m]);
         }
+    }
+}
+int computeScore(char board[][26], int n, int row, int col, char colour) {
+    int score = 0;
+    char other = assignColour(colour);
+    for (int m = 0; m < 8; m++) {
+        int i = row + di[m];
+        int j = col + dj[m];
+        while (positionInBounds(n, i, j) && board[i][j] == other) {
+            score++;
+            i += di[m];
+            j += dj[m];
+        }
+    }
+    return score;
+}
+
+void CMove(char board[][26], int n, char colour) {
+    int maxScore = -1;
+    int bestRow, bestCol;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (board[i][j] == 'U') {
+                int score = computeScore(board, n, i, j, colour);
+                if (score > maxScore) {
+                    maxScore = score;
+                    bestRow = i;
+                    bestCol = j;
+                }
+            }
+        }
+    }
+    if (maxScore > 0) {
+        makeMove(board, n, bestRow, bestCol, colour);
     }
 }
 
@@ -156,38 +184,53 @@ int main(void) {
   printf("Enter the board dimension: ");
   scanf("%d", &n);
   char board[n][26];
-  //even nxn array
   if (n%2==0){
-    // Initialize the board before printing
-    initBoard(board,n);  
-    printBoard(board,n);
-    readBoard(board, n);
-    //printf("after!!!!!!!!!!!!!!!!!!!!!!\n");
-    printBoard(board, n);
-    movesAvail(board,n, 'W');
-    movesAvail(board,n, 'B');
-    char colour, row, col;
-    printf("Enter a move:\n");
-    scanf(" %c%c%c", &colour, &row, &col);
-    //reinit to proper grid
-    int i = row - 'a';
-    int j = col - 'a';
-  bool isValid = false;
-  for (int m = 0; m < 8; m++) {
-    if (checkLegalInDirection(board, n, i, j, colour, di[m], dj[m])) {
-        isValid = true;
-        break;
+    initBoard(board, n);
+    char opponentColour, colour,row, col; 
+    srand(time(NULL));
+    if (rand() % 2 == 0){
+        opponentColour = 'W';
+        colour='B';
+    }else{
+        opponentColour = 'B';
+        colour = 'W';
     }
-  }
-  if (positionInBounds(n, i, j) && board[i][j] == 'U' && isValid==true) {
-    printf("Valid move.\n");
-    makeMove(board, n, i, j, colour);
+    printf("Computer plays (B/W): %c\n", opponentColour);
     printBoard(board, n);
-  } else {
-    printf("Invalid move.\n");
-    printBoard(board, n);
+
   }
-  }
+//   //even nxn array
+//   if (n%2==0){
+//     // Initialize the board before printing
+//     initBoard(board,n);  
+//     printBoard(board,n);
+//     readBoard(board, n);
+//     //printf("after!!!!!!!!!!!!!!!!!!!!!!\n");
+//     printBoard(board, n);
+//     movesAvail(board,n, 'W');
+//     movesAvail(board,n, 'B');
+//     char colour, row, col;
+//     printf("Enter a move:\n");
+//     scanf(" %c%c%c", &colour, &row, &col);
+//     //reinit to proper grid
+//     int i = row - 'a';
+//     int j = col - 'a';
+//   bool isValid = false;
+//   for (int m = 0; m < 8; m++) {
+//     if (checkLegalInDirection(board, n, i, j, colour, di[m], dj[m])) {
+//         isValid = true;
+//         break;
+//     }
+//   }
+//   if (positionInBounds(n, i, j) && board[i][j] == 'U' && isValid==true) {
+//     printf("Valid move.\n");
+//     makeMove(board, n, i, j, colour);
+//     printBoard(board, n);
+//   } else {
+//     printf("Invalid move.\n");
+//     printBoard(board, n);
+//   }
+//   }
 }
 // Enter the board dimension: 4
 // abcd

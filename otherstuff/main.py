@@ -1,28 +1,23 @@
 element = "FeCO3"
-alphabet = ['A','B','C','D','E','F','G']
-key = {}
-count = 0 
-numbers = []
+element_dict = {}
+i = 0
 
-for i in range(len(element) - 1):
-    if element[i].isupper() and element[i+1].islower():
-        temp = element[i] + element[i+1]
-        key[temp] = count
-        count += 1
-    elif element[i].isupper() and element[i+1].isnumeric():
+while i < len(element):
+    if i+1 < len(element) and element[i].isupper() and element[i+1].islower():
+        temp = element[i:i+2]
+        i += 2
+    else:
         temp = element[i]
-        key[temp] = count
-        count += 1
+        i += 1
 
-if element[-1].isupper():
-    temp = element[-1]
-    key[temp] = count
+    num = ''
+    while i < len(element) and element[i].isdigit():
+        num += element[i]
+        i += 1
 
-for i in range(len(element)-1):
-    if element[i].isnumeric() and element[i+1].isnumeric():
-        numbers.append(str(element[i])+str(element[i+1]))
-    elif element[i].isnumeric():
-        numbers.append(str(element[i]))
+    if num == '':
+        num = '1'
 
-print(numbers)
-print(key)
+    element_dict[temp] = int(num)
+
+print(element_dict)
