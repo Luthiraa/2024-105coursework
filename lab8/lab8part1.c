@@ -195,6 +195,7 @@ int main(void) {
         opponentColour = 'B';
         colour = 'W';
     }
+    
     printf("Computer plays (B/W): %c\n", opponentColour);
     printBoard(board, n);
 
