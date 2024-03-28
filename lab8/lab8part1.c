@@ -188,11 +188,9 @@ void makeMove(char board[][26], int n, int row, int col, char colour)
 bool computerMove(char board[][26], int n, char colour) {
     // Initialize the maximum score and the best move coordinates
     int MScore = -1, BRow = -1, BCol = -1;
-
-    // Iterate over the board
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            // ver unoccupied
+            //unoccupied
             if (board[i][j] == 'U') {
                 // Initialize the score for this cell
                 int score = 0;
@@ -235,6 +233,34 @@ bool computerMove(char board[][26], int n, char colour) {
         return true;
     }
 }
+void displayWinner(char board[][26], int n) {
+    int countB = 0, countW = 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (board[i][j] == 'B') {
+                countB++;
+            } else if (board[i][j] == 'W') {
+                countW++;
+            }
+        }
+    }
+
+    if(countB > countW) {
+        printf("B wins.\n");
+    } else{
+        printf("W wins.\n");
+    }
+}
+bool isBoardFilled(char board[][26], int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (board[i][j] == 'U') {
+                return false;
+            }
+        }
+    }
+    return true;
+}
 int main(void)
 {
     int n;
@@ -248,15 +274,16 @@ int main(void)
         char CColour = rand() % 2 == 0 ? 'W' : 'B';
         char YColour = assignColour(CColour);
         char row, col;
+        printf("here !!!\n");
         if (CColour == 'B')
         {
             do
-            {
+            {   
                 printBoard(board, n);
                 computerMove(board, n, CColour);
                 printBoard(board, n);
                 char *move[2];
-                printf("Enter move for colour %c (RowCol): \n",YColour);
+                printf("Enter move for colour %c (RowCol): ",YColour);
                 scanf(" %c%c", &row, &col);
                 // reinit to proper grid
                 int i = row - 'a';
@@ -278,15 +305,44 @@ int main(void)
                 else
                 {
                     printf("Invalid move.\n");
-                    printBoard(board, n);
+                    printf("%c player wins.", CColour);
+                    break; 
                 }
-            }while(n);
+                if (isBoardFilled(board, n)) {
+    displayWinner(board, n);
+}
+            }while(!isBoardFilled(board, n));
     }
     else{
         do{
-            
-
-        }while (n);
+            printBoard(board, n);
+             printf("Enter move for colour %c (RowCol): ",YColour);
+                scanf(" %c%c", &row, &col);
+                // reinit to proper grid
+                int i = row - 'a';
+                int j = col - 'a';
+                bool isValid = false;
+                for (int m = 0; m < 8; m++){
+                    if (checkLegalInDirection(board, n, i, j, YColour, di[m], dj[m]))
+                    {
+                        isValid = true;
+                        break;
+                    }
+                }
+                if (positionInBounds(n, i, j) && board[i][j] == 'U' && isValid == true)
+                {
+                    printf("Valid move.\n");
+                    makeMove(board, n, i, j, YColour);
+                    printBoard(board, n);
+                }
+                else
+                {
+                    printf("Invalid move.\n");
+                    printf("%c player wins.",CColour);
+                    break;                    
+                }
+                computerMove(board, n, CColour);
+        }while (!isBoardFilled(board, n));
     }
 }
 }
