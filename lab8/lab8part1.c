@@ -213,8 +213,8 @@ bool computerMove(char board[][26], int n, char colour) {
                     }
                 }
 
-                // If the score for this cell is higher than the current maximum score,
-                // update the maximum score and the best move coordinates
+                // If score for this cell is higher than the current max score,
+                // update the max score and the best move coors
                 if (score > MScore) {
                     MScore = score;
                     BRow = i;
@@ -239,7 +239,7 @@ int main(void)
 {
     int n;
     printf("Enter the board dimension: ");
-    scanf("%d", &n);
+    scanf(" %d", &n);
     char board[n][26];
     // even nxn array
     if (n%2==0){
@@ -284,6 +284,7 @@ int main(void)
     }
     else{
         do{
+            
 
         }while (n);
     }
