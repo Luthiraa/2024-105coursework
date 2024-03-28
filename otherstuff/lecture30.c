@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 //recursion cont'd
 
@@ -39,10 +40,45 @@ void printPattern(int n){
 }
 
 //!trace code above 
+//! for exams will be either pattern or array
+
+//* for strings: 
+    //palindrome radar same foward and backward
+//recursive function to determine if a word is a palindrome or not 
+bool isPalindrome(char * word){
+    int length = strlen(word);
+    if (length <= 1) {// the base case is when the length of the word is 1 
+        return true; 
+    } else {
+        if (word[0] == word[length - 1]) {
+            // First and last characters match, check if the substring is a palindrome
+            word[length - 1] = '\0'; // Remove last character
+            return isPalindrome(word + 1);
+        } else {
+            return false; // Not a palindrome
+        }
+    }
+} 
+
+//salma explaination 
+
+bool checkPalindrome(char * word, int low, int high ){
+    int low = 0, high = strlen(word)-1;
+    if (word[low]!=word[high]){
+        return false;
+    }else{
+        return checkPalindrome(word, low+1,high-1);
+    }
+}
+
+//!trace aswell 
+
+
+
 
 int main(void){
     printStars(3);
     printPattern(5);
     return 0; 
-    
+
 }
