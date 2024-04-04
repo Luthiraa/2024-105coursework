@@ -1,0 +1,241 @@
+
+int main(void)
+{
+    char row, col;
+    int n;
+    bool notValidInvoked = false;
+    printf("Enter the board dimension: ");
+    scanf(" %d", &n);
+
+    char board[n][26];
+    initBoard(board, n);
+
+    char CColour, YColour;
+    printf("Computer plays (B/W): ");
+    scanf(" %c", &CColour);
+
+    if (CColour == 'W')
+    {
+        YColour = 'B';
+    }
+    else
+    {
+        YColour = 'W';
+    }
+
+    // Print initial board
+    printBoard(board, n);
+
+    // Main game loop
+    while (true)
+    {
+        // If computer is 'B', it should play first
+        if (CColour == 'B')
+        {
+            // Computer's turn
+            char currentColour = CColour;
+            char oppColour = YColour;
+            // If computer cannot make a move, skip turn
+            if (!hasValidMove(board, n, currentColour))
+            {
+                printf("%c player has no valid move.\n", currentColour);
+                printf("Enter move for colour %c (RowCol): ", oppColour);
+                scanf(" %c%c", &row, &col);
+                int rowIndex = row - 'a';
+                int colIndex = col - 'a';
+
+                if (positionInBounds(n, rowIndex, colIndex) && board[rowIndex][colIndex] == 'U')
+                {
+                    bool isValidMove = false;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        if (checkLegalInDirection(board, n, rowIndex, colIndex, oppColour, di[i], dj[i]))
+                        {
+                            isValidMove = true;
+                            break;
+                        }
+                    }
+                    if (isValidMove)
+                    {
+                        makeMove(board, n, rowIndex, colIndex, oppColour);
+                    }
+                    else
+                    {
+                        printf("Invalid move.\n");
+                        printf("%c player wins.\n", CColour);
+                        notValidInvoked = true;
+                        break; // End the game since it's an invalid move
+                    }
+                }
+                else
+                {
+                    printf("Invalid move.\n");
+                    printf("%c player wins.\n", CColour);
+                    notValidInvoked = true;
+                    break; // End the game since it's an invalid move
+                }
+            }
+            else
+            {
+                if (!computerMove(board, n, currentColour))
+                {
+                    printf("%c player has no valid move.\n", currentColour);
+                }
+            }
+            printBoard(board, n);
+        }
+
+        // Player's turn
+        char currentColour = YColour;
+        char oppColour = CColour;
+        // If player cannot make a move, skip turn
+        if (!hasValidMove(board, n, currentColour))
+        {
+            printf("%c player has no valid move.\n", currentColour);
+            printf("Enter move for colour %c (RowCol): ", oppColour);
+            scanf(" %c%c", &row, &col);
+            int rowIndex = row - 'a';
+            int colIndex = col - 'a';
+
+            if (positionInBounds(n, rowIndex, colIndex) && board[rowIndex][colIndex] == 'U')
+            {
+                bool isValidMove = false;
+                for (int i = 0; i < 8; i++)
+                {
+                    if (checkLegalInDirection(board, n, rowIndex, colIndex, currentColour, di[i], dj[i]))
+                    {
+                        isValidMove = true;
+                        break;
+                    }
+                }
+                if (isValidMove)
+                {
+                    makeMove(board, n, rowIndex, colIndex, currentColour);
+                }
+                else
+                {
+                    printf("Invalid move.\n");
+                    printf("%c player wins.\n", CColour);
+                    notValidInvoked = true;
+                    break; // End the game since it's an invalid move
+                }
+            }
+            else
+            {
+                printf("Invalid move.\n");
+                printf("%c player wins.\n", CColour);
+                notValidInvoked = true;
+                break; // End the game since it's an invalid move
+            }
+        }
+        else
+        {
+            printf("Enter move for colour %c (RowCol): ", currentColour);
+            scanf(" %c%c", &row, &col);
+            int rowIndex = row - 'a';
+            int colIndex = col - 'a';
+            if (positionInBounds(n, rowIndex, colIndex) && board[rowIndex][colIndex] == 'U')
+            {
+                bool isValidMove = false;
+                for (int i = 0; i < 8; i++)
+                {
+                    if (checkLegalInDirection(board, n, rowIndex, colIndex, currentColour, di[i], dj[i]))
+                    {
+                        isValidMove = true;
+                        break;
+                    }
+                }
+                if (isValidMove)
+                {
+                    makeMove(board, n, rowIndex, colIndex, currentColour);
+                }
+                else
+                {
+                    printf("Invalid move.\n");
+                    printf("%c player wins.\n", CColour);
+                    notValidInvoked = true;
+                    break; // End the game since it's an invalid move
+                }
+            }
+            else
+            {
+                printf("Invalid move.\n");
+                printf("%c player wins.\n", CColour);
+                notValidInvoked = true;
+                break; // End the game since it's an invalid move
+            }
+        }
+        // Print board after player's move
+        printBoard(board, n);
+
+        // If computer is 'W', it should play after the player
+        if (CColour == 'W')
+        {
+            // Computer's turn
+            char currentColour = CColour;
+            char oppColour = YColour;
+            // If computer cannot make a move, skip turn
+            if (!hasValidMove(board, n, currentColour))
+            {
+                printf("%c player has no valid move.\n", currentColour);
+                printf("Enter move for colour %c (RowCol): ", oppColour);
+                scanf(" %c%c", &row, &col);
+                int rowIndex = row - 'a';
+                int colIndex = col - 'a';
+
+                if (positionInBounds(n, rowIndex, colIndex) && board[rowIndex][colIndex] == 'U')
+                {
+                    bool isValidMove = false;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        if (checkLegalInDirection(board, n, rowIndex, colIndex, oppColour, di[i], dj[i]))
+                        {
+                            isValidMove = true;
+                            break;
+                        }
+                    }
+                    if (isValidMove)
+                    {
+                        makeMove(board, n, rowIndex, colIndex, oppColour);
+                    }
+                    else
+                    {
+                        printf("Invalid move.\n");
+                        printf("%c player wins.\n", CColour);
+                        notValidInvoked = true;
+                        break; // End the game since it's an invalid move
+                    }
+                }
+                else
+                {
+                    printf("Invalid move.\n");
+                    printf("%c player wins.\n", CColour);
+                    notValidInvoked = true;
+                    break; // End the game since it's an invalid move
+                }
+            }
+            else
+            {
+                if (!computerMove(board, n, currentColour))
+                {
+                    printf("%c player has no valid move.\n", currentColour);
+                }
+            }
+            printBoard(board, n);
+        }
+
+        // Check if the board is filled, if so, end the game
+        if (isBoardFilled(board, n))
+        {
+            break;
+        }
+    }
+
+    // Display winner if the game did not end due to invalid move
+    if (!notValidInvoked)
+    {
+        displayWinner(board, n);
+    }
+
+    return 0;
+}

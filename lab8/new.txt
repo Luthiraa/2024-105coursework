@@ -1,0 +1,101 @@
+int main(void)
+{
+    int n;
+    printf("Enter the board dimension: ");
+    scanf(" %d", &n);
+    char board[n][26];
+    initBoard(board, n);
+    char CColour, YColour;
+    printf("Computer plays (B/W): ");
+    scanf(" %c", &CColour);
+    YColour = assignColour(CColour);
+    char row, col;
+
+    // If even nxn array
+    if (n % 2 == 0) {
+        // Computer plays first
+        if (CColour == 'B') {
+            do {
+                printBoard(board, n);
+                computerMove(board, n, CColour);
+                printBoard(board, n);
+
+                // Player's turn
+                printf("Enter move for colour %c (RowCol): ", YColour);
+                scanf(" %c%c", &row, &col);
+                int i = row - 'a';
+                int j = col - 'a';
+                bool isValid = false;
+                for (int m = 0; m < 8; m++) {
+                    if (checkLegalInDirection(board, n, i, j, YColour, di[m], dj[m])) {
+                        isValid = true;
+                        break;
+                    }
+                }
+                if (positionInBounds(n, i, j) && board[i][j] == 'U' && isValid == true) {
+                    printf("Valid move.\n");
+                    makeMove(board, n, i, j, YColour);
+                    printBoard(board, n);
+                } else {
+                    printf("Invalid move.\n");
+                    printf("%c player wins.\n", CColour);
+                    break;
+                }
+                if (isBoardFilled(board, n)) {
+                    displayWinner(board, n);
+                }
+            } while (!isBoardFilled(board, n));
+        } else { // Player plays first
+            do {
+                printBoard(board, n);
+                printf("Enter move for colour %c (RowCol): ", YColour);
+                scanf(" %c%c", &row, &col);
+                int i = row - 'a';
+                int j = col - 'a';
+                bool isValid = false;
+                for (int m = 0; m < 8; m++) {
+                    if (checkLegalInDirection(board, n, i, j, YColour, di[m], dj[m])) {
+                        isValid = true;
+                        break;
+                    }
+                }
+                if (positionInBounds(n, i, j) && board[i][j] == 'U' && isValid == true) {
+                    printf("Valid move.\n");
+                    makeMove(board, n, i, j, YColour);
+                    printBoard(board, n);
+                } else {
+                    printf("Invalid move.\n");
+                    printf("%c player wins.\n", CColour);
+                    break;
+                }
+                computerMove(board, n, CColour);
+            } while (!isBoardFilled(board, n));
+        }
+    } else { // Odd nxn array
+        do {
+            printBoard(board, n);
+            printf("Enter move for colour %c (RowCol): ", YColour);
+            scanf(" %c%c", &row, &col);
+            int i = row - 'a';
+            int j = col - 'a';
+            bool isValid = false;
+            for (int m = 0; m < 8; m++) {
+                if (checkLegalInDirection(board, n, i, j, YColour, di[m], dj[m])) {
+                    isValid = true;
+                    break;
+                }
+            }
+            if (positionInBounds(n, i, j) && board[i][j] == 'U' && isValid == true) {
+                printf("Valid move.\n");
+                makeMove(board, n, i, j, YColour);
+                printBoard(board, n);
+            } else {
+                printf("Invalid move.\n");
+                printf("%c player wins.\n", CColour);
+                break;
+            }
+            computerMove(board, n, CColour);
+        } while (!isBoardFilled(board, n));
+    }
+    return 0;
+}
