@@ -59,9 +59,33 @@ void handleInsert(LinkedList* circuit) {
   Node * newNode = malloc(sizeof(Node));
   newNode->value = resistance; 
   strncpy(newNode->name, labelName, STRING_MAX);
-  // TODO: Implement the insert into ordered list function
+  Node * current = circuit->head; 
+  Node* current = circuit->head;
+  Node* prev = NULL;
+  while (current != NULL && strcmp(current->name, newNode->name) < 0) {
+    prev = current;
+    current = current->next;
+  }
+  if (current != NULL && strcmp(current->name, newNode->name) == 0) {
+    printf("A resistor with %s label already exists .\n",newNode->name);
+    free(newNode);
+    return;
+  }
+  newNode->next = current;
+  if (prev == NULL) {
+    circuit->head = newNode;
+  } else {
+    prev->next = newNode;
+  }
 }
 void handleRemove(LinkedList* circuit) {
+  printf("What ’s the label of the resistor you want to remove: ");
+  char labelName[STRING_MAX];
+  readInputString(labelName, STRING_MAX);
+  Node* current = circuit->head;
+  Node* prev = NULL;
+  
+
   // TODO: Implement the remove function
 }
 
@@ -74,6 +98,7 @@ void handleVoltage(LinkedList* circuit, int voltage) {
   // resistor
 }
 void handlePrint(LinkedList* circuit) {
+
   // TODO: they can implement the print function
 }
 
