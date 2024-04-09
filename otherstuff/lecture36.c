@@ -48,7 +48,7 @@ void deleteAtTail(LinkedList *list)
 // free it up and link the temp to the current next  (free(temp))
 
 //! salma way
-bool deleteSpecificNode(LinkedList *list, int value)
+bool deleteFirsyMatch(LinkedList *list, int value)
 {
     //! ORDER OF IF STATEMETNSTS mATTEr
 
@@ -105,6 +105,18 @@ void deleteNode(LinkedList *list, int value)
         current = current->next;
     }
 }
+
+//* delete all matches
+int deleteAllMatches(LinkedList *list, int value)
+{
+    int count = 0;
+    while (deleteFirsyMatch(list, value))
+    {
+        count++;
+    }
+    return count;
+}
+
 int main(void)
 {
 }
