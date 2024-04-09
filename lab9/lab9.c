@@ -79,20 +79,41 @@ void handleInsert(LinkedList* circuit) {
   }
 }
 void handleRemove(LinkedList* circuit) {
-  printf("What ’s the label of the resistor you want to remove: ");
+  printf("What's the label of the resistor you want to remove: ");
   char labelName[STRING_MAX];
   readInputString(labelName, STRING_MAX);
+
   Node* current = circuit->head;
   Node* prev = NULL;
-  
 
-  // TODO: Implement the remove function
+  while (current != NULL) {
+    if (strcmp(current->name, labelName) == 0) {
+      if (prev == NULL) {
+        circuit->head = current->next;
+      } else {
+        prev->next = current->next;
+      }
+      free(current);
+      printf("Resistor with label %s removed.\n", labelName);
+      return;
+    }
+    prev = current;
+    current = current->next;
+  }
+  printf("No resistor with the label %s found.\n", labelName);
 }
 
 void handleCurrentCal(LinkedList* circuit, int voltage) {
-  // TODO: Implement the function that prints the value of current in the
-  // circuit
+  int totalResistance = 0;
+  Node* current = circuit->head;
+  while (current != NULL) {
+    totalResistance += current->value;
+    current = current->next;
+  }
+  double currentFlow = (double)voltage / totalResistance;
+  printf("The current flowing through the circuit is %.6f\n", currentFlow);
 }
+
 void handleVoltage(LinkedList* circuit, int voltage) {
   // TODO: Implement the function that prints the potential difference across a
   // resistor
