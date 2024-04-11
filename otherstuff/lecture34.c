@@ -47,6 +47,8 @@ bool insertAtFront2(LinkedList * list,int value){
     list->head = temp; // sets the head to the temp variable
     return true;
 }
+
+
 //function that prints the nodes inside the linked list
 
 void printList (LinkedList * list){

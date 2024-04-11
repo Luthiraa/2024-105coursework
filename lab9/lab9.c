@@ -49,6 +49,7 @@ int main(void) {
   return 0;
 }
 
+
 void handleInsert(LinkedList* circuit) {
   int resistance = 0;
   printf("What's the value of the resistor: ");
@@ -59,70 +60,129 @@ void handleInsert(LinkedList* circuit) {
   Node * newNode = malloc(sizeof(Node));
   newNode->value = resistance; 
   strncpy(newNode->name, labelName, STRING_MAX);
-  Node * current = circuit->head; 
+
   Node* current = circuit->head;
-  Node* prev = NULL;
+  // keep track of previous node to connect it in the end
+  Node* low = NULL;
+
+
+//iterat through only if the llist isnt empty and while the label's value comes before the one beig inserted
   while (current != NULL && strcmp(current->name, newNode->name) < 0) {
-    prev = current;
+    //check if a resistor with the same label exisits
+    if (strcmp(current->name, newNode->name) == 0) {
+      printf("A resistor with %s label already exists.\n", newNode->name);
+      free(newNode);
+      return;
+    }
+    //iteratre trhough low and current
+    low = current;
     current = current->next;
   }
-  if (current != NULL && strcmp(current->name, newNode->name) == 0) {
-    printf("A resistor with %s label already exists .\n",newNode->name);
-    free(newNode);
-    return;
-  }
+
   newNode->next = current;
-  if (prev == NULL) {
+
+  //if at the begiinning set the newnode to the head
+  if (low == NULL) {
     circuit->head = newNode;
   } else {
-    prev->next = newNode;
+    //connect the preious node to the newnode
+    low->next = newNode;
   }
 }
+
+
 void handleRemove(LinkedList* circuit) {
   printf("What's the label of the resistor you want to remove: ");
   char labelName[STRING_MAX];
   readInputString(labelName, STRING_MAX);
 
   Node* current = circuit->head;
-  Node* prev = NULL;
+  Node* low = NULL;
 
   while (current != NULL) {
     if (strcmp(current->name, labelName) == 0) {
-      if (prev == NULL) {
+      if (low == NULL) {
         circuit->head = current->next;
       } else {
-        prev->next = current->next;
+        low->next = current->next;
       }
       free(current);
       printf("Resistor with label %s removed.\n", labelName);
       return;
     }
-    prev = current;
+    low = current;
     current = current->next;
   }
+
+
   printf("No resistor with the label %s found.\n", labelName);
 }
 
 void handleCurrentCal(LinkedList* circuit, int voltage) {
-  int totalResistance = 0;
+  int rEQ = 0;
   Node* current = circuit->head;
   while (current != NULL) {
-    totalResistance += current->value;
+    //simply add resistors bc they in series
+    rEQ += current->value;
     current = current->next;
   }
-  double currentFlow = (double)voltage / totalResistance;
+  //calculate current
+  double currentFlow = (double)voltage / rEQ;
   printf("The current flowing through the circuit is %.6f\n", currentFlow);
 }
 
+double calculateCurrent (LinkedList * circuit, int voltage){
+  int rEQ = 0;
+  Node* current = circuit->head;
+  while (current != NULL) {
+    rEQ += current->value;
+    current = current->next;
+  }
+  double currentFlow = (double)voltage / rEQ;
+  return currentFlow; 
+}
+
 void handleVoltage(LinkedList* circuit, int voltage) {
-  // TODO: Implement the function that prints the potential difference across a
-  // resistor
+  // calculate current 
+  // calculate voltage drop across each resistor
+  double currentInCircuit = calculateCurrent(circuit, voltage);
+  //traverse the list to match the label, and grab the resistor value
+  printf("What\'s the label of the resistor you want to find the voltage across : ");
+  char labelName[STRING_MAX];
+  readInputString(labelName, STRING_MAX);
+  Node * current = circuit->head; 
+  while(current !=NULL){
+    if (strcmp(current->name, labelName) == 0){
+      double potentialDiff = currentInCircuit * current->value; 
+      // printf("\n%f ---- %d \n", potentialDiff, currentInCircuit,circuit->value);
+      printf("Voltage across resistor is %.6fV",potentialDiff);
+      return;
+    }
+    current = current->next;
+  }
+  printf("The resistor with %s label does not exist .",labelName);
 }
 void handlePrint(LinkedList* circuit) {
-
+  
+  Node * current = circuit->head; 
+  while(current!=NULL){
+    printf("%s %d Ohms\n",current->name,current->value);
+    current = current ->next;
+  }
   // TODO: they can implement the print function
 }
 
 void handleQuit(LinkedList* circuit) {
-  // TODO: Implement the quit function
+  printf("Removing all resistors in the circuit ...\n");
+  
+  // Traverse the list and free each node
+  Node* current = circuit->head;
+  while (current != NULL) {
+    Node* temp = current;
+    current = current->next;
+    printf("%s %d Ohms", temp->name,temp->value);
+    free(temp);
+  }  
+  // Reset the head pointer
+  circuit->head = NULL;
 }
