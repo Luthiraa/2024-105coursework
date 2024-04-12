@@ -1,0 +1,27 @@
+Short answer quesstions: 
+1-7 (<60 mins): 
+    completeing code
+    correcting code 
+    true and false
+
+easy intermediate questions  (60 mins)
+1-2 challenging questions  (30 mins)
+    2d arrays 
+    strings and string functions
+        iterative
+            1. think of reduce size of string
+            2. think of increasing size of string
+        recursive
+            1. think of reduce size of string 
+            2. base case
+    recursion
+        print pattern 
+    dynamic memory allocation
+    linked lists (challenging)
+    searching and sorting (easiest)
+
+
+
+solve past finals
+
+

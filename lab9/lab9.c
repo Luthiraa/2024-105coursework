@@ -65,31 +65,35 @@ void handleInsert(LinkedList* circuit) {
   // keep track of previous node to connect it in the end
   Node* low = NULL;
 
-
-//iterat through only if the llist isnt empty and while the label's value comes before the one beig inserted
-  while (current != NULL && strcmp(current->name, newNode->name) < 0) {
-    //check if a resistor with the same label exisits
+  // Check if a resistor with the same label exists
+  while (current != NULL) {
     if (strcmp(current->name, newNode->name) == 0) {
       printf("A resistor with %s label already exists.\n", newNode->name);
       free(newNode);
       return;
     }
-    //iteratre trhough low and current
+    current = current->next;
+  }
+
+  current = circuit->head;
+
+  // iterate through only if the list isn't empty and while the label's value comes before the one being inserted
+  while (current != NULL && strcmp(current->name, newNode->name) < 0) {
+    // iterate through low and current
     low = current;
     current = current->next;
   }
 
   newNode->next = current;
 
-  //if at the begiinning set the newnode to the head
+  // if at the beginning set the new node to the head
   if (low == NULL) {
     circuit->head = newNode;
   } else {
-    //connect the preious node to the newnode
+    // connect the previous node to the new node
     low->next = newNode;
   }
 }
-
 
 void handleRemove(LinkedList* circuit) {
   printf("What's the label of the resistor you want to remove: ");
@@ -107,15 +111,12 @@ void handleRemove(LinkedList* circuit) {
         low->next = current->next;
       }
       free(current);
-      printf("Resistor with label %s removed.\n", labelName);
       return;
     }
     low = current;
     current = current->next;
   }
-
-
-  printf("No resistor with the label %s found.\n", labelName);
+  printf("The resistor with %s label does not exist.\n", labelName);
 }
 
 void handleCurrentCal(LinkedList* circuit, int voltage) {
@@ -128,10 +129,11 @@ void handleCurrentCal(LinkedList* circuit, int voltage) {
   }
   //calculate current
   double currentFlow = (double)voltage / rEQ;
-  printf("The current flowing through the circuit is %.6f\n", currentFlow);
+  printf("The current in the circuit is %.6fA\n", currentFlow);
 }
 
 double calculateCurrent (LinkedList * circuit, int voltage){
+  //req in series
   int rEQ = 0;
   Node* current = circuit->head;
   while (current != NULL) {
@@ -160,7 +162,7 @@ void handleVoltage(LinkedList* circuit, int voltage) {
     }
     current = current->next;
   }
-  printf("The resistor with %s label does not exist .",labelName);
+  printf("The resistor with %s label does not exist.\n",labelName);
 }
 void handlePrint(LinkedList* circuit) {
   
