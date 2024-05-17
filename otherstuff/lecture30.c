@@ -72,13 +72,22 @@ bool checkPalindrome(char * word, int low, int high ){
 }
 
 //!trace aswell 
+#include <stdio.h>
+#include <string.h>
 
+int main() {
+    char str[] = "Hello, world! This is a test string.";
+    char *substring = "world";
 
+    // Find the first occurrence of substring in str
+    char *result = strstr(str, substring);
 
+    if (result != NULL) {
+        printf("Substring found at index: %ld\n", result - str);
+    } else {
+        printf("Substring not found\n");
+    }
 
-int main(void){
-    printStars(3);
-    printPattern(5);
-    return 0; 
-
+    return 0;
 }
+
